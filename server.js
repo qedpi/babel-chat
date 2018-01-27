@@ -65,5 +65,9 @@ io.on("connection", socket => {
         console.log('disconnected', uid_to_handle.get(socket.id), socket.id);
         uid_to_handle.delete(socket.id);
     });
+
+    socket.on('circle', data => {
+        socket.broadcast.emit('circle', data);
+    });
 });
 

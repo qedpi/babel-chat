@@ -19,6 +19,11 @@ const chatapp = new Vue({
         lang_to: 'none',
         tts_langs: ['no', 'en', 'fr', 'sp', 'po', 'ge', 'it'],
         use_tts: false,
+
+        canvas: null,
+        context: null,
+        radius: .5,
+        draw_stack: [],
     },
     methods: {
         emit_chat(){
@@ -66,6 +71,24 @@ const chatapp = new Vue({
         remove_typing(data){
             this.users_typing = this.users_typing.filter(h => h !== data.handle);
         },
+
+        draw_circle(e){
+            this.context.beginPath();
+            this.context.arc(e.offsetX, e.offsetY, this.radius * 10, 0, Math.PI * 2);
+            this.context.fill();
+            const circ = {offsetX: e.offsetX, offsetY: e.offsetY};
+            this.draw_stack.push(circ);
+            socket.emit('circle', circ);
+            // alert('draw a circle! ' + e.offsetX + ' ' + e.offsetY);
+        },
+        add_circle(e){
+            // alert('got a circle! ' + e.offsetX + ' ' + e.offsetY);
+            this.context.beginPath();
+            this.context.arc(e.offsetX, e.offsetY, this.radius * 10, 0, Math.PI * 2);
+            this.context.fill();
+            const circ = {x: e.offsetX, y: e.offsetY};
+            this.draw_stack.push(circ);
+        },
     },
     beforeMount(){
         let response = '';
@@ -77,8 +100,13 @@ const chatapp = new Vue({
             }
         }
         this.users.push(this.handle = response);
+        this.log.push({handle: this.handle, message: ', welcome to babelchat!', type: 'log-users'});
 
         socket.emit('user_entry', {handle: this.handle});
+    },
+    mounted(){
+        this.canvas = document.getElementById('canvas');
+        this.context = canvas.getContext('2d');
     },
     updated(){
         document.getElementById('log').scrollTop = 9999999;
@@ -99,3 +127,5 @@ socket.on('users_update', data => chatapp.add_initial_users(data));
 
 socket.on('typing', data => chatapp.add_typing(data));
 socket.on('remove_typing', data => chatapp.remove_typing(data));
+
+socket.on('circle', data => chatapp.add_circle(data));

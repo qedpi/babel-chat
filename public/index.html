@@ -19,7 +19,7 @@
     <div class="wrapper">
         <div class="card text-center">
             <div class="card-header">
-                <h2>online</h2>
+                <h3>online</h3>
             </div>
             <div class="card-body text-left">
                 <ul>
@@ -32,7 +32,7 @@
         <div class="card">
             <div class="card-block" id="chat-window">
                 <div class="card-header bg-success text-white text-center">
-                    <h2>Chat</h2>
+                    <h3>Chat</h3>
                 </div>
 
                 <!-- Chatlog -->
@@ -81,10 +81,10 @@
         <!-- Draw app -->
         <div class="card">
             <div class="card-header bg-warning text-white text-center">
-                <h2>Draw</h2>
+                <h3>Draw</h3>
             </div>
             <div class="card-body">
-                <canvas id="canvas">Your browser does not support Canvas</canvas>
+                <canvas @mousedown="draw_circle" id="canvas">Your browser does not support Canvas</canvas>
             </div>
         </div>
 
