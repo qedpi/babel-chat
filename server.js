@@ -26,7 +26,7 @@ function wait_translate(data){
 
     translate(data.message, {from: '', to: data.lang_to}).then(res => {
         console.log(res.text);
-        io.emit("chat", {handle: data.handle, message: res.text});
+        io.emit("chat", {handle: data.handle, message: res.text, lang_to: data.lang_to});
     }).catch(err => {});
 }
 
