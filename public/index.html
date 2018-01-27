@@ -68,6 +68,7 @@
                     Translate to: <input v-model = "lang_to" id="lang_to" type="text">
                     <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here" autofocus>
                     <button @click="emit_chat" id="sendbutton" class="btn btn-success">Send</button>
+                    use TTS &nbsp; <input v-model="use_tts" type="checkbox">
                 </div>
             </div>
         </div>
@@ -81,5 +82,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <script src ="https://cdn.jsdelivr.net/npm/vue"></script>
+
+<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 
 <script src="chat.js"></script>

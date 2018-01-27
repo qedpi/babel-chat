@@ -17,11 +17,13 @@ const chatapp = new Vue({
         users: [],
         users_typing: [],
         lang_to: 'none',
+        use_tts: false,
     },
     methods: {
         emit_chat(){
             if (this.lang_to === 'none'){
                 this.add_message({message: this.message, handle: this.handle});
+                // responsiveVoice.speak(this.message);
             }
             socket.emit('chat', {
                 message: this.message,
@@ -37,6 +39,10 @@ const chatapp = new Vue({
         add_message(data){
             this.log.push({handle: data.handle, message: data.message, type: 'log-msg'});
             // this.$refs.scrollTop = this.$refs.scrollHeight;
+
+            if (data.handle !== this.handle && this.use_tts && ['none', 'en'].includes(data.lang_to)){
+                responsiveVoice.speak(data.message);
+            }
         },
         add_user(data){
              if (true || !this.users.includes(data.handle)){
