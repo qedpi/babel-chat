@@ -12,12 +12,14 @@ const chatapp = new Vue({
         log_limit: 10,
         users: [],
         users_typing: [],
+        lang_to: 'english',
     },
     methods: {
         emit_chat(){
             socket.emit('chat', {
                 message: this.message,
                 handle: this.handle,
+                lang_to: this.lang_to,
             });
             this.message = '';
         },
@@ -43,6 +45,7 @@ const chatapp = new Vue({
         add_typing(data){
             if (!this.users_typing.includes(data.handle)){
                 this.users_typing.push(data.handle);
+                setTimeout(() => this.remove_typing(data), 5000);
             }
         },
         remove_typing(data){

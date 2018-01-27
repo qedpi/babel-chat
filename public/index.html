@@ -48,6 +48,7 @@
                 <div class="card-footer">
                     <input v-model="handle_color" type="color">
                     <!--<input v-model="handle" id="handle" type="text" placeholder="Handle">-->
+                    Translate to: <input v-model = "lang_to" id="lang_to" type="text">
                     <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here" autofocus>
                     <button @click="emit_chat" id="sendbutton">Send</button>
                 </div>

@@ -30,6 +30,10 @@
     color: mediumpurple;
 }
 
+#lang_to {
+    width: 10%;
+}
+
 #message {
     width: 60%;
 }

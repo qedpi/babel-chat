@@ -22,9 +22,10 @@ const users_online = new Set();
 const uid_to_handle = new Map();
 
 function wait_translate(data){
-    console.log('translating', data.message);
-    translate(data.message, {from: 'en', to: 'fr'}).then(res => {
-        console.log('translated to:', res.text);
+    console.log('translating', data.message, 'to', data.lang_to, ':');
+
+    translate(data.message, {from: 'en', to: data.lang_to}).then(res => {
+        console.log(res.text);
         io.sockets.emit("chat", {handle: data.handle, message: res.text});
     }).catch(err => {});
 }
