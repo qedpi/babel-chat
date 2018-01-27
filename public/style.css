@@ -14,17 +14,24 @@
     overflow-y: auto;
 }
 
+#log hr {
+    margin: .2em 0em;
+}
+
 .username {
     border-radius: 50%;
     background-color: lightblue;
     height: 3em;
     width: 3em;
+    vertical-align: middle;
+    line-height: 3em;
 }
 
 .chat-wrapper {
     display: grid;
     grid-template-columns: 3% 95%;
     grid-column-gap: 2%;
+    padding: .2em 0em;
 }
 
 .message-handle {
