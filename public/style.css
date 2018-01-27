@@ -1,7 +1,8 @@
 .wrapper {
     display: grid;
-    grid-template-columns: 20% 78%;
-    grid-column-gap: 2%;
+    /* users online, chatlog, canvas */
+    grid-template-columns: 10% 44% 44%;
+    grid-column-gap: 1%;
 }
 
 #chat-window {
@@ -43,5 +44,11 @@
 }
 
 #message {
-    width: 60%;
+    width: 100%;
+}
+
+#canvas {
+    background-color: beige;
+    width: 100%;
+    height: 100%;
 }

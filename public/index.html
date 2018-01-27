@@ -17,7 +17,7 @@
     </div>
 
     <div class="wrapper">
-        <div class="card card-success text-center">
+        <div class="card text-center">
             <div class="card-header">
                 <h2>online</h2>
             </div>
@@ -27,9 +27,13 @@
                 </ul>
             </div>
         </div>
-        <div class="card card-warning">
+
+        <!-- Chat app -->
+        <div class="card">
             <div class="card-block" id="chat-window">
-                <div class="card-header bg-success text-white text-center">Chat</div>
+                <div class="card-header bg-success text-white text-center">
+                    <h2>Chat</h2>
+                </div>
 
                 <!-- Chatlog -->
                 <div id="log" ref = "log">
@@ -63,15 +67,27 @@
 
                 <!-- Message box -->
                 <div class="card-footer">
+                    <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here" autofocus>
+
                     <input v-model="handle_color" type="color">
                     <!--<input v-model="handle" id="handle" type="text" placeholder="Handle">-->
                     Translate to: <input v-model = "lang_to" id="lang_to" type="text">
-                    <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here" autofocus>
                     <button @click="emit_chat" id="sendbutton" class="btn btn-success">Send</button>
                     use TTS &nbsp; <input v-model="use_tts" type="checkbox">
                 </div>
             </div>
         </div>
+
+        <!-- Draw app -->
+        <div class="card">
+            <div class="card-header bg-warning text-white text-center">
+                <h2>Draw</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="canvas">Your browser does not support Canvas</canvas>
+            </div>
+        </div>
+
     </div>
 </div>
 </body>

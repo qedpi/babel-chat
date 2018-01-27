@@ -42,7 +42,7 @@ const chatapp = new Vue({
             // this.$refs.scrollTop = this.$refs.scrollHeight;
             // alert(data.lang_to + ' ' + data.lang_to.substring(0, 3));
             if (data.handle !== this.handle && this.use_tts && this.tts_langs.includes(data.lang_to.substring(0, 2))){
-                responsiveVoice.speak(data.message);
+                responsiveVoice.speak(data.handle + ' says ' + data.message);
             }
         },
         add_user(data){
