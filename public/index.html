@@ -31,6 +31,7 @@
             <div class="card-block" id="chat-window">
                 <div class="card-header bg-success text-white">Chatlog</div>
 
+                <!-- Chatlog -->
                 <div id="log" ref = "log">
                     <div v-for="m in log">
                         <div class="chat-wrapper">
@@ -41,10 +42,15 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Is Typing -->
                 <div v-if="users_typing.length">
                     {{users_typing.join(', ') + ' is typing ... '}}
                     <!-- <span v-for = "user of users_typing">{{user}},&nbsp</span> is typing... -->
                 </div>
+                <div v-else>&nbsp;</div>
+
+                <!-- Message box -->
                 <div class="card-footer">
                     <input v-model="handle_color" type="color">
                     <!--<input v-model="handle" id="handle" type="text" placeholder="Handle">-->
