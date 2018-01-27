@@ -1,6 +1,6 @@
 // make connection
-const socket = io.connect("http://localhost:3000");
-
+const socket = io.connect();
+ // for testing locally http://localhost:3000"
 const chatapp = new Vue({
     el: '#chatapp',
     data: {
