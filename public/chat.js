@@ -27,17 +27,17 @@ const chatapp = new Vue({
             socket.emit('typing', {handle: this.handle});
         },
         add_message(data){
-            this.log.push({handle: data.handle, message: data.message});
+            this.log.push({handle: data.handle, message: data.message, type: 'log-msg'});
             // this.$refs.scrollTop = this.$refs.scrollHeight;
         },
         add_user(data){
              if (true || !this.users.includes(data.handle)){
                 this.users.push(data.handle);
             }
-            this.log.push({handle: data.handle, message: 'has joined!'});
+            this.log.push({handle: data.handle, message: 'has joined!', type: 'log-users'});
         },
         remove_user(data){
-            this.log.push({handle: data.handle, message: 'has left!'});
+            this.log.push({handle: data.handle, message: 'has left!', type: 'log-users'});
         },
         add_initial_users(data){
             this.users = data.handle;
