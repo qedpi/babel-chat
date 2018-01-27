@@ -24,7 +24,7 @@ const uid_to_handle = new Map();
 function wait_translate(data){
     console.log('translating', data.message, 'to', data.lang_to, ':');
 
-    translate(data.message, {from: 'en', to: data.lang_to}).then(res => {
+    translate(data.message, {from: '', to: data.lang_to}).then(res => {
         console.log(res.text);
         io.sockets.emit("chat", {handle: data.handle, message: res.text});
     }).catch(err => {});
