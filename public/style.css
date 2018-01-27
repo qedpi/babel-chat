@@ -29,3 +29,7 @@
 .message-handle {
     color: mediumpurple;
 }
+
+#message {
+    width: 60%;
+}

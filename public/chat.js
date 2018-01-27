@@ -29,7 +29,13 @@ const chatapp = new Vue({
             // this.$refs.scrollTop = this.$refs.scrollHeight;
         },
         add_user(data){
-            this.users.push(data.handle);
+             if (true || !this.users.includes(data.handle)){
+                this.users.push(data.handle);
+            }
+            this.log.push({handle: data.handle, message: 'has joined!'});
+        },
+        remove_user(data){
+            this.log.push({handle: data.handle, message: 'has left!'});
         },
         add_initial_users(data){
             this.users = data.handle;
@@ -51,7 +57,12 @@ const chatapp = new Vue({
         },
     },
     mounted(){
-        this.handle = prompt('enter nickname: ');
+        let response = '';
+        while (response === '' || this.users.includes(response)){
+            response = prompt('enter nickname: ');
+        }
+        this.handle = response;
+
         socket.emit('user_entry', {handle: this.handle});
     },
     updated(){
@@ -65,6 +76,7 @@ socket.on('users_initial', data => chatapp.add_initial_users(data));
 socket.on("chat", data => chatapp.add_message(data));
 
 socket.on('user_entry', data => chatapp.add_user(data));
+socket.on('user_exit', data => chatapp.remove_user(data));
 
 socket.on('typing', data => chatapp.add_typing(data));
 socket.on('remove_typing', data => chatapp.remove_typing(data));

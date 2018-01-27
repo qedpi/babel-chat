@@ -42,13 +42,13 @@
                     </div>
                 </div>
                 <div v-if="users_typing.length">
-                    {{users_typing.join(', ') + ' is typing...'}}
+                    {{users_typing.join(', ') + ' is typing ... '}}
                     <!-- <span v-for = "user of users_typing">{{user}},&nbsp</span> is typing... -->
                 </div>
                 <div class="card-footer">
                     <input v-model="handle_color" type="color">
-                    <input v-model="handle" id="handle" type="text" placeholder="Handle">
-                    <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here">
+                    <!--<input v-model="handle" id="handle" type="text" placeholder="Handle">-->
+                    <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here" autofocus>
                     <button @click="emit_chat" id="sendbutton">Send</button>
                 </div>
             </div>

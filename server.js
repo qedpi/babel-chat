@@ -54,9 +54,10 @@ io.on("connection", socket => {
 
     socket.on('disconnect', () => {
         users_online.delete(uid_to_handle.get(socket.id));
-        uid_to_handle.delete(socket.id);
+        io.sockets.emit('user_exit', {handle: uid_to_handle.get(socket.id)});
         io.sockets.emit('users_initial', {handle: [...users_online]});
-        console.log('disconnected', socket.id);
+        console.log('disconnected', uid_to_handle.get(socket.id), socket.id);
+        uid_to_handle.delete(socket.id);
     });
 });
 
