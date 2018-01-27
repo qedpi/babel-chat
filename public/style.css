@@ -10,7 +10,7 @@
 
 #log {
     height: 80%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .username {

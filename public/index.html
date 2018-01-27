@@ -33,13 +33,11 @@
 
                 <!-- Chatlog -->
                 <div id="log" ref = "log">
-                    <div v-for="m in log">
-                        <div class="chat-wrapper">
-                            <div class="username text-center">{{m.handle[0].toUpperCase()}}</div>
-                            <div :style = "{'color': handle_color}" class="chat-text">
-                                <strong class="message-handle">{{m.handle}}:</strong>
-                                {{m.message}}</div>
-                        </div>
+                    <div class="chat-wrapper" v-for="m in log">
+                        <div class="username text-center">{{m.handle[0].toUpperCase()}}</div>
+                        <div :style = "{'color': handle_color}" class="chat-text">
+                            <strong class="message-handle">{{m.handle}}:</strong>
+                            {{m.message}}</div>
                     </div>
                 </div>
 
@@ -56,7 +54,7 @@
                     <!--<input v-model="handle" id="handle" type="text" placeholder="Handle">-->
                     Translate to: <input v-model = "lang_to" id="lang_to" type="text">
                     <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here" autofocus>
-                    <button @click="emit_chat" id="sendbutton">Send</button>
+                    <button @click="emit_chat" id="sendbutton" class="btn btn-success">Send</button>
                 </div>
             </div>
         </div>
