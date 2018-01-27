@@ -1,0 +1,30 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 20% 78%;
+    grid-column-gap: 2%;
+}
+
+#chat-window {
+    height: 600px;
+}
+
+#log {
+    height: 80%;
+}
+
+.username {
+    border-radius: 50%;
+    background-color: lightblue;
+    height: 3em;
+    width: 3em;
+}
+
+.chat-wrapper {
+    display: grid;
+    grid-template-columns: 3% 95%;
+    grid-column-gap: 2%;
+}
+
+.message-handle {
+    color: mediumpurple;
+}

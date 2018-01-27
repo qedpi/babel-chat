@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chat app</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <!-- Local -->
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+<div id="chatapp">
+    <div class="container text-center">
+        <h2>Babel Chat!</h2>
+    </div>
+
+    <div class="wrapper">
+        <div class="card card-success text-center">
+            <div class="card-header">
+                <h2>users online</h2>
+            </div>
+            <div class="card-body text-left">
+                <ul>
+                    <li v-for = "user in users">{{user}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card card-warning">
+            <div class="card-block" id="chat-window">
+                <div class="card-header bg-success text-white">Chatlog</div>
+
+                <div id="log">
+                    <div v-for="m in log">
+                        <div class="chat-wrapper">
+                            <div class="username text-center">{{m.handle[0].toUpperCase()}}</div>
+                            <div :style = "{'color': handle_color}" class="chat-text">
+                                <strong class="message-handle">{{m.handle}}:</strong>
+                                {{m.message}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="users_typing.length">
+                    {{users_typing.join(', ') + ' is typing...'}}
+                    <!-- <span v-for = "user of users_typing">{{user}},&nbsp</span> is typing... -->
+                </div>
+                <div class="card-footer">
+                    <input v-model="handle_color" type="color">
+                    <input v-model="handle" id="handle" type="text" placeholder="Handle">
+                    <input v-model="message" @keyup.enter = "emit_chat" @keyup = "emit_typing" id="message" type="text" placeholder="Type here">
+                    <button @click="emit_chat" id="sendbutton">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script src ="https://cdn.jsdelivr.net/npm/vue"></script>
+
+<script src="chat.js"></script>
