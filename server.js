@@ -44,7 +44,12 @@ io.on("connection", socket => {
 
     socket.on('chat', data => {
         io.sockets.emit('remove_typing', data);
-        wait_translate(data);
+        if (data.lang_to == 'none'){
+            io.sockets.emit("chat", data);
+            console.log('no translation', data.message);
+        } else {
+            wait_translate(data);
+        }
         // io.sockets.emit("chat", {handle: data.handle, message: translation});
         // console.log('result', {handle: data.handle, message: to_french(data.message)});
     });

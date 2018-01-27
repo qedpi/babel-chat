@@ -12,7 +12,7 @@ const chatapp = new Vue({
         log_limit: 10,
         users: [],
         users_typing: [],
-        lang_to: 'english',
+        lang_to: 'none',
     },
     methods: {
         emit_chat(){
