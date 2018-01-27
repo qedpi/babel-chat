@@ -1,8 +1,12 @@
 // make connection
 const socket = io.connect();
  // for testing locally http://localhost:3000"
+
+const masterapp = new Vue({
+
+});
+
 const chatapp = new Vue({
-    el: '#chatapp',
     data: {
         msg: 'hello world',
         handle: '',
@@ -16,12 +20,16 @@ const chatapp = new Vue({
     },
     methods: {
         emit_chat(){
+            if (this.lang_to === 'none'){
+                this.add_message({message: this.message, handle: this.handle});
+            }
             socket.emit('chat', {
                 message: this.message,
                 handle: this.handle,
                 lang_to: this.lang_to,
             });
             this.message = '';
+
         },
         emit_typing(){
             socket.emit('typing', {handle: this.handle});
@@ -52,19 +60,16 @@ const chatapp = new Vue({
             this.users_typing = this.users_typing.filter(h => h !== data.handle);
         },
     },
-    computed: {
-    },
-    filters: {
-        limit_chat(log){
-            return log.slice(Math.min(0, log.length - this.log_limit));
-        },
-    },
-    mounted(){
+    beforeMount(){
         let response = '';
         while (response === '' || this.users.includes(response)){
-            response = prompt('enter nickname: ');
+            if (response === ''){
+                response = prompt('enter nickname: ');
+            } else {
+                response = prompt('nickname already used, enter another nickname: ');
+            }
         }
-        this.handle = response;
+        this.users.push(this.handle = response);
 
         socket.emit('user_entry', {handle: this.handle});
     },
@@ -73,13 +78,17 @@ const chatapp = new Vue({
     },
 });
 
-// Listen for events
-socket.on('users_initial', data => chatapp.add_initial_users(data));
+// Load initial users
+socket.on('users_initial', data => {
+    chatapp.add_initial_users(data);
+    chatapp.$mount('#chatapp');
+});
 
 socket.on("chat", data => chatapp.add_message(data));
 
 socket.on('user_entry', data => chatapp.add_user(data));
 socket.on('user_exit', data => chatapp.remove_user(data));
+socket.on('users_update', data => chatapp.add_initial_users(data));
 
 socket.on('typing', data => chatapp.add_typing(data));
 socket.on('remove_typing', data => chatapp.remove_typing(data));

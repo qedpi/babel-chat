@@ -35,7 +35,12 @@
                 <div id="log" ref = "log">
                     <template v-for="m in log">
                         <div v-if="m.type == 'log-msg'" class="chat-wrapper">
-                            <div class="username text-center">{{m.handle[0].toUpperCase()}}</div>
+                            <div class="username text-center">
+                                <strong>
+                                    {{m.handle[0].toUpperCase()}}
+                                </strong>
+
+                            </div>
                             <div :style = "{'color': handle_color}" class="chat-text">
                                 <strong class="message-handle">{{m.handle}}:</strong>
                                 {{m.message}}</div>
