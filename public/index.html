@@ -23,7 +23,7 @@
             </div>
             <div class="card-body text-left">
                 <ul>
-                    <li v-for = "user in users">{{user}}</li>
+                    <li v-for="user in users">{{user}}</li>
                 </ul>
             </div>
         </div>
@@ -31,7 +31,7 @@
             <div class="card-block" id="chat-window">
                 <div class="card-header bg-success text-white">Chatlog</div>
 
-                <div id="log">
+                <div id="log" ref = "log">
                     <div v-for="m in log">
                         <div class="chat-wrapper">
                             <div class="username text-center">{{m.handle[0].toUpperCase()}}</div>
@@ -48,7 +48,7 @@
                 <div class="card-footer">
                     <input v-model="handle_color" type="color">
                     <input v-model="handle" id="handle" type="text" placeholder="Handle">
-                    <input v-model="message" @keyup.enter = "emit_chat" @keyup = "emit_typing" id="message" type="text" placeholder="Type here">
+                    <input v-model="message" @keyup = "emit_typing" @keyup.enter = "emit_chat" id="message" type="text" placeholder="Type here">
                     <button @click="emit_chat" id="sendbutton">Send</button>
                 </div>
             </div>

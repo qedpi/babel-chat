@@ -9,6 +9,7 @@ const chatapp = new Vue({
         message: '',
         handle_color: '#000000',
         log: [],
+        log_limit: 10,
         users: [],
         users_typing: [],
     },
@@ -25,9 +26,13 @@ const chatapp = new Vue({
         },
         add_message(data){
             this.log.push({handle: data.handle, message: data.message});
+            // this.$refs.scrollTop = this.$refs.scrollHeight;
         },
         add_user(data){
             this.users.push(data.handle);
+        },
+        add_initial_users(data){
+            this.users = data.handle;
         },
         add_typing(data){
             if (!this.users_typing.includes(data.handle)){
@@ -40,13 +45,23 @@ const chatapp = new Vue({
     },
     computed: {
     },
+    filters: {
+        limit_chat(log){
+            return log.slice(Math.min(0, log.length - this.log_limit));
+        },
+    },
     mounted(){
         this.handle = prompt('enter nickname: ');
         socket.emit('user_entry', {handle: this.handle});
     },
+    updated(){
+        document.getElementById('log').scrollTop = 9999999;
+    },
 });
 
 // Listen for events
+socket.on('users_initial', data => chatapp.add_initial_users(data));
+
 socket.on("chat", data => chatapp.add_message(data));
 
 socket.on('user_entry', data => chatapp.add_user(data));

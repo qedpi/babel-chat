@@ -17,6 +17,10 @@ app.use(express.static('public'));
 // Socket Setup
 const io = socket(server);
 
+// Users
+const users_online = new Set();
+const uid_to_handle = new Map();
+
 function wait_translate(data){
     console.log('translating', data.message);
     translate(data.message, {from: 'en', to: 'fr'}).then(res => {
@@ -27,8 +31,13 @@ function wait_translate(data){
 
 io.on("connection", socket => {
     console.log("made socket connection to", socket.id);
+    io.sockets.emit('users_initial', {handle: [...users_online]});
 
     socket.on('user_entry', data => {
+        console.log('user entered', data.handle);
+        users_online.add(data.handle);
+        uid_to_handle.set(socket.id, data.handle);
+        console.log(uid_to_handle);
         io.sockets.emit('user_entry', data);
     });
 
@@ -41,6 +50,13 @@ io.on("connection", socket => {
 
     socket.on('typing', data => {
         io.sockets.emit('typing', data);
+    });
+
+    socket.on('disconnect', () => {
+        users_online.delete(uid_to_handle.get(socket.id));
+        uid_to_handle.delete(socket.id);
+        io.sockets.emit('users_initial', {handle: [...users_online]});
+        console.log('disconnected', socket.id);
     });
 });
 
