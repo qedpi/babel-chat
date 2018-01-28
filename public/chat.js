@@ -1,3 +1,4 @@
+// import {Drawable, Point, Circle, Pair, Stroke} from './Drawable.js';
 
 // make connection
 const socket = io.connect();
@@ -122,7 +123,7 @@ const chatapp = new Vue({
     },
     beforeMount(){
         let response = '';
-        while (response === '' || this.users.includes(response)){
+        while (response === '' || response === null || this.users.includes(response)){
             if (response === ''){
                 response = prompt('enter nickname: ');
             } else {
