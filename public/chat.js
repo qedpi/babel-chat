@@ -1,10 +1,7 @@
+
 // make connection
 const socket = io.connect();
  // for testing locally http://localhost:3000"
-
-const masterapp = new Vue({
-
-});
 
 const chatapp = new Vue({
     data: {
@@ -24,6 +21,16 @@ const chatapp = new Vue({
         context: null,
         radius: .5,
         draw_stack: [],
+
+        mouse: {
+            x: 0,
+            y: 0,
+        },
+        dragging: false,
+        epage: {
+            x: 0,
+            y: 0,
+        },
     },
     methods: {
         emit_chat(){
@@ -72,21 +79,44 @@ const chatapp = new Vue({
             this.users_typing = this.users_typing.filter(h => h !== data.handle);
         },
 
-        draw_circle(e){
-            this.context.beginPath();
-            this.context.arc(e.offsetX, e.offsetY, this.radius * 10, 0, Math.PI * 2);
-            this.context.fill();
-            const circ = {offsetX: e.offsetX, offsetY: e.offsetY};
-            this.draw_stack.push(circ);
-            socket.emit('circle', circ);
-            // alert('draw a circle! ' + e.offsetX + ' ' + e.offsetY);
+        update_mouse(e){
+            this.mouse.x = e.offsetX;
+            this.mouse.y = e.offsetY;
+            this.epage.x = e.pageX;
+            this.epage.y = e.pageY;
         },
-        add_circle(e){
+        draw_circle(e){
+            this.update_mouse(e);
+            if (this.dragging){
+                const rect = this.canvas.getBoundingClientRect();
+                const circ = {x: e.offsetX, y: e.offsetY};
+                //const circ = {x: e.pageX - rect.left, y: e.pageY - rect.top};
+                // alert(rect.left + ' '  + rect.top);
+                // alert(rect.left + ', ' + rect.top);
+
+                this.context.beginPath();
+                this.context.arc(circ.x, circ.y, this.radius * 10, 0, Math.PI * 2);
+                this.context.arc(e.pageX, e.pageY, this.radius * 10, 0, Math.PI * 2);
+
+                this.context.fill();
+
+
+                /*
+                // this.context.fillRect(e.offsetX, e.offsetY, 50, 50);
+                this.context.fillStyle = 'rgba(0, 255, 0';
+                this.context.fillRect(e.clientX - e.offsetX, e.clientY - e.offsetY, 50, 50);
+                */
+                this.draw_stack.push(circ);
+                socket.emit('circle', circ);
+                // alert('draw a circle! ' + e.offsetX + ' ' + e.offsetY);
+            }
+        },
+        add_circle(circ){
             // alert('got a circle! ' + e.offsetX + ' ' + e.offsetY);
+
             this.context.beginPath();
-            this.context.arc(e.offsetX, e.offsetY, this.radius * 10, 0, Math.PI * 2);
+            this.context.arc(circ.x, circ.y, this.radius * 10, 0, Math.PI * 2);
             this.context.fill();
-            const circ = {x: e.offsetX, y: e.offsetY};
             this.draw_stack.push(circ);
         },
     },
@@ -106,6 +136,10 @@ const chatapp = new Vue({
     },
     mounted(){
         this.canvas = document.getElementById('canvas');
+        // canvas.height = 250;// window.innerHeight;
+
+        this.canvas.width = 500;
+        this.canvas.height = 600;
         this.context = canvas.getContext('2d');
     },
     updated(){
@@ -119,6 +153,8 @@ socket.on('users_initial', data => {
     chatapp.$mount('#chatapp');
 });
 
+
+// server to client interactions
 socket.on("chat", data => chatapp.add_message(data));
 
 socket.on('user_entry', data => chatapp.add_user(data));
