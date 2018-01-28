@@ -1,4 +1,7 @@
-// import {Drawable, Point, Circle, Pair, Stroke} from './Drawable.js';
+// import {Drawable, Point, Circle, Pair, Stroke} from 'Drawable.js';
+
+// import {Pair} from "./Drawable";
+
 
 // make connection
 const socket = io.connect();
@@ -28,10 +31,10 @@ const chatapp = new Vue({
             y: 0,
         },
         dragging: false,
-        epage: {
-            x: 0,
-            y: 0,
-        },
+
+        renderedStrokes: [],
+        undoStrokes: [],
+        strokeBuffer: [],           // list of points
     },
     methods: {
         emit_chat(){
@@ -52,8 +55,7 @@ const chatapp = new Vue({
         },
         add_message(data){
             this.log.push({handle: data.handle, message: data.message, type: 'log-msg'});
-            // this.$refs.scrollTop = this.$refs.scrollHeight;
-            // alert(data.lang_to + ' ' + data.lang_to.substring(0, 3));
+
             if (data.handle !== this.handle && this.use_tts && this.tts_langs.includes(data.lang_to.substring(0, 2))){
                 responsiveVoice.speak(data.handle + ' says ' + data.message);
             }
@@ -83,38 +85,37 @@ const chatapp = new Vue({
         update_mouse(e){
             this.mouse.x = e.offsetX;
             this.mouse.y = e.offsetY;
-            this.epage.x = e.pageX;
-            this.epage.y = e.pageY;
         },
+
+        draw_path(e){
+            this.update_mouse(e);
+            if (this.dragging) {
+                context.lineTo(this.mouse.x, this.mouse.y);
+                context.stroke();
+
+                context.beginPath(); // move to new point
+                context.moveTo(this.mouse.x, this.mouse.y);
+
+                this.strokeBuffer.push(new Pair(this.mouse.x, this.mouse.y));
+            }
+        },
+
         draw_circle(e){
             this.update_mouse(e);
             if (this.dragging){
                 const rect = this.canvas.getBoundingClientRect();
                 const circ = {x: e.offsetX, y: e.offsetY};
-                //const circ = {x: e.pageX - rect.left, y: e.pageY - rect.top};
-                // alert(rect.left + ' '  + rect.top);
-                // alert(rect.left + ', ' + rect.top);
 
                 this.context.beginPath();
                 this.context.arc(circ.x, circ.y, this.radius * 10, 0, Math.PI * 2);
                 this.context.arc(e.pageX, e.pageY, this.radius * 10, 0, Math.PI * 2);
-
                 this.context.fill();
 
-
-                /*
-                // this.context.fillRect(e.offsetX, e.offsetY, 50, 50);
-                this.context.fillStyle = 'rgba(0, 255, 0';
-                this.context.fillRect(e.clientX - e.offsetX, e.clientY - e.offsetY, 50, 50);
-                */
                 this.draw_stack.push(circ);
                 socket.emit('circle', circ);
-                // alert('draw a circle! ' + e.offsetX + ' ' + e.offsetY);
             }
         },
         add_circle(circ){
-            // alert('got a circle! ' + e.offsetX + ' ' + e.offsetY);
-
             this.context.beginPath();
             this.context.arc(circ.x, circ.y, this.radius * 10, 0, Math.PI * 2);
             this.context.fill();
@@ -141,7 +142,7 @@ const chatapp = new Vue({
 
         this.canvas.width = 500;
         this.canvas.height = 600;
-        this.context = canvas.getContext('2d');
+        this.context = this.canvas.getContext('2d');
     },
     updated(){
         document.getElementById('log').scrollTop = 9999999;
