@@ -54,3 +54,15 @@
 #canvas:hover {
     cursor: crosshair;
 }
+
+#user_list {
+    list-style: none;
+    padding-left: 0;
+}
+
+#user_list li {
+    border: lightgray solid 1px;
+    text-align: center;;
+    margin-bottom: .3em;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
+}

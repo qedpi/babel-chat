@@ -22,7 +22,7 @@
                 <h3>online</h3>
             </div>
             <div class="card-body text-left">
-                <ul>
+                <ul id="user_list">
                     <li v-for="user in users">{{user}}</li>
                 </ul>
             </div>
@@ -73,7 +73,9 @@
                     <!--<input v-model="handle" id="handle" type="text" placeholder="Handle">-->
                     Translate to: <input v-model = "lang_to" id="lang_to" type="text">
                     <button @click="emit_chat" id="sendbutton" class="btn btn-success">Send</button>
-                    use TTS &nbsp; <input v-model="use_tts" type="checkbox">
+                    <span class="float-right">
+                        use TTS &nbsp; <input v-model="use_tts" type="checkbox">
+                    </span>
                 </div>
             </div>
         </div>
