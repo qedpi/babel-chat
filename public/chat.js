@@ -7,6 +7,14 @@
 const socket = io.connect();
  // for testing locally http://localhost:3000"
 
+function play_sound_effect(id){
+    // makes sure that sound effect plays from start even when it's still playing
+    aud = document.getElementById(id)
+    aud.pause()
+    aud.currentTime = 0
+    aud.play()
+}
+
 const chatapp = new Vue({
     data: {
         msg: 'hello world',
@@ -54,6 +62,7 @@ const chatapp = new Vue({
             socket.emit('typing', {handle: this.handle});
         },
         add_message(data){
+            play_sound_effect('audio_chat');
             this.log.push({handle: data.handle, message: data.message, type: 'log-msg'});
 
             if (data.handle !== this.handle && this.use_tts && this.tts_langs.includes(data.lang_to.substring(0, 2))){
@@ -61,12 +70,12 @@ const chatapp = new Vue({
             }
         },
         add_user(data){
-             if (true || !this.users.includes(data.handle)){
-                this.users.push(data.handle);
-            }
+            play_sound_effect('audio_user');
+            this.users.push(data.handle);
             this.log.push({handle: data.handle, message: 'has joined!', type: 'log-users'});
         },
         remove_user(data){
+            play_sound_effect('audio_user');
             this.log.push({handle: data.handle, message: 'has left!', type: 'log-users'});
         },
         add_initial_users(data){
